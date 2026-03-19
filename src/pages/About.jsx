@@ -38,15 +38,6 @@ function About() {
           <div className="timeline">
             <div className="timeline-item fade-in">
               <div className="timeline-dot" />
-              <p className="timeline-company">Snowflake</p>
-              <p className="timeline-role">Incoming Software Engineer Intern</p>
-              <p className="timeline-date">Fall 2026</p>
-              <p className="timeline-desc">
-                Core infrastructure team working on the datalake platform.
-              </p>
-            </div>
-            <div className="timeline-item fade-in">
-              <div className="timeline-dot" />
               <p className="timeline-company">Meta</p>
               <p className="timeline-role">Incoming Production Engineer Intern</p>
               <p className="timeline-date">Summer 2026</p>

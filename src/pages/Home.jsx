@@ -20,7 +20,7 @@ function Home() {
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/Eshaan-Chaturvedi"
+            href="https://linkedin.com/in/"
             target="_blank"
             rel="noopener noreferrer"
             className="home-link secondary"
