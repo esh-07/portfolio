@@ -28,7 +28,7 @@ function Home() {
             LinkedIn
           </a>
           <a
-            href="mailto:eshaan@example.com"
+            href="mailto:eshaanchaturvedi@gmail.com"
             className="home-link secondary"
           >
             Email Me
