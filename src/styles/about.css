@@ -96,6 +96,19 @@
   line-height: 1.6;
 }
 
+/* Education */
+.education-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color var(--transition);
+}
+
+.education-card:hover {
+  border-color: var(--color-border-hover);
+}
+
 /* Skills */
 .skills-grid {
   display: grid;

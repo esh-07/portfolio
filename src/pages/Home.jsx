@@ -7,8 +7,8 @@ function Home() {
         <p className="home-greeting">Hello, I&#39;m</p>
         <h1 className="home-name">Eshaan Chaturvedi</h1>
         <p className="home-tagline">
-          Computer Science &amp; Data Science student at UW–Madison.
-          Building things for the web, one project at a time.
+          Computer Science &amp; Data Science @ UW–Madison.
+          Building software that scales — from low-latency systems to full-stack applications.
         </p>
         <div className="home-links">
           <a
@@ -20,7 +20,7 @@ function Home() {
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/"
+            href="https://linkedin.com/in/Eshaan-Chaturvedi"
             target="_blank"
             rel="noopener noreferrer"
             className="home-link secondary"

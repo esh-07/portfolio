@@ -1,119 +1,91 @@
 const projects = [
   {
     id: 1,
-    title: "AI-Powered Study Planner",
-    shortDescription: "A smart study scheduler that uses ML to optimize your study sessions based on learning patterns.",
-    fullDescription: "Built a full-stack study planner that analyzes student learning patterns using machine learning models. The app tracks study habits, predicts optimal study times, and generates personalized schedules. Features include spaced repetition integration, progress tracking dashboards, and collaborative study group management.",
-    techStack: ["Python", "React", "Flask", "TensorFlow", "PostgreSQL"],
-    category: "ML",
+    title: "QuantFlow",
+    shortDescription: "Real-time options pricing and risk analysis engine with sub-microsecond latency.",
+    fullDescription: "A real-time options pricing engine built with C++ using Black-Scholes and Monte Carlo simulation models. The system computes Greeks (Delta, Gamma, Vega) across large position sets with parallel processing, enabling real-time portfolio hedging and risk management. Designed for high throughput and low-latency performance.",
+    techStack: ["C++", "Python", "Java"],
+    category: "Systems",
     github: "https://github.com/esh-07",
     liveDemo: "",
     images: [
-      "https://placehold.co/800x450/2563eb/ffffff?text=Study+Planner+Dashboard",
-      "https://placehold.co/800x450/7c3aed/ffffff?text=Analytics+View"
+      "https://placehold.co/800x450/1e293b/94a3b8?text=QuantFlow+Engine",
+      "https://placehold.co/800x450/0f172a/64748b?text=Risk+Dashboard"
     ]
   },
   {
     id: 2,
-    title: "Real-Time Chat Application",
-    shortDescription: "A WebSocket-based chat app with rooms, typing indicators, and message reactions.",
-    fullDescription: "Developed a real-time messaging platform using WebSockets. Users can create and join chat rooms, see typing indicators, react to messages with emojis, and share files. The app features end-to-end message delivery confirmation, user presence tracking, and a responsive mobile-first design.",
-    techStack: ["React", "Node.js", "Socket.io", "MongoDB"],
-    category: "Frontend",
+    title: "PixelForge Tech",
+    shortDescription: "Full-stack platform with real-time features, AI personalization, and scalable infrastructure.",
+    fullDescription: "Co-founded and built a data-driven platform from the ground up as a founding engineer. The application features real-time capabilities via WebRTC, an AI-powered personalization engine using TensorFlow for user behavior analysis, and a scalable backend processing tens of thousands of concurrent sessions with sub-50ms latency.",
+    techStack: ["React", "Python", "Node.js", "MongoDB", "AWS", "TensorFlow"],
+    category: "Full-Stack",
     github: "https://github.com/esh-07",
-    liveDemo: "https://esh-07.github.io",
+    liveDemo: "",
     images: [
-      "https://placehold.co/800x450/059669/ffffff?text=Chat+Interface",
-      "https://placehold.co/800x450/0891b2/ffffff?text=Room+Selection"
+      "https://placehold.co/800x450/7c3aed/e9d5ff?text=PixelForge+Platform",
+      "https://placehold.co/800x450/6d28d9/c4b5fd?text=Analytics+Dashboard"
     ]
   },
   {
     id: 3,
-    title: "Unix Shell Implementation",
-    shortDescription: "A custom Unix shell built from scratch in C with piping, redirection, and job control.",
-    fullDescription: "Implemented a fully functional Unix shell in C that supports command execution, piping between processes, I/O redirection, environment variable management, and basic job control (foreground/background processes). The shell handles signal management, built-in commands (cd, exit, history), and wildcard expansion.",
-    techStack: ["C", "Linux", "Make"],
-    category: "Systems",
-    github: "https://github.com/esh-07",
-    liveDemo: "",
-    images: [
-      "https://placehold.co/800x450/dc2626/ffffff?text=Shell+Demo",
-      "https://placehold.co/800x450/ea580c/ffffff?text=Piping+Example"
-    ]
-  },
-  {
-    id: 4,
-    title: "E-Commerce REST API",
-    shortDescription: "A scalable RESTful API for an e-commerce platform with auth, payments, and inventory management.",
-    fullDescription: "Designed and built a RESTful API for an e-commerce platform. Features include JWT-based authentication, role-based access control, Stripe payment integration, inventory management with real-time stock updates, order processing pipeline, and comprehensive API documentation with Swagger. Includes rate limiting and request validation middleware.",
-    techStack: ["Node.js", "Express", "PostgreSQL", "Redis", "Docker"],
-    category: "Backend",
-    github: "https://github.com/esh-07",
-    liveDemo: "",
-    images: [
-      "https://placehold.co/800x450/7c3aed/ffffff?text=API+Documentation",
-      "https://placehold.co/800x450/6d28d9/ffffff?text=Architecture+Diagram"
-    ]
-  },
-  {
-    id: 5,
-    title: "Sentiment Analysis Dashboard",
-    shortDescription: "NLP-powered dashboard that analyzes sentiment from social media posts and reviews.",
-    fullDescription: "Created a sentiment analysis tool that processes text data from social media APIs and product reviews. Uses natural language processing to classify sentiment as positive, negative, or neutral with confidence scores. The dashboard visualizes trends over time, generates word clouds, and supports batch processing of CSV uploads.",
-    techStack: ["Python", "scikit-learn", "Flask", "D3.js", "NLTK"],
+    title: "AstroClassifier",
+    shortDescription: "Deep learning model for space debris trajectory prediction, presented at Regeneron ISEF.",
+    fullDescription: "A machine learning system for predicting space debris trajectories, achieving high accuracy across tracked objects. Built with TensorFlow and integrated with NASA APIs for real-time orbital data. Features a distributed inference pipeline for low-latency collision detection. The project was presented at the national round of Regeneron ISEF and published in the International Journal of Software & Hardware Research.",
+    techStack: ["Python", "TensorFlow", "NumPy", "REST APIs"],
     category: "ML",
     github: "https://github.com/esh-07",
     liveDemo: "",
     images: [
-      "https://placehold.co/800x450/be185d/ffffff?text=Sentiment+Dashboard",
-      "https://placehold.co/800x450/9d174d/ffffff?text=Word+Cloud"
+      "https://placehold.co/800x450/0369a1/bae6fd?text=AstroClassifier",
+      "https://placehold.co/800x450/075985/7dd3fc?text=Prediction+Visualization"
+    ]
+  },
+  {
+    id: 4,
+    title: "LLM Inference Benchmarking",
+    shortDescription: "Benchmarking infrastructure comparing latency and throughput across major LLM providers.",
+    fullDescription: "Built at Cohere — an automated benchmarking system that measures inference latency and throughput across multiple LLM providers. The system processes thousands of requests weekly with cache-hit detection and generates performance comparison reports. Includes statistical regression monitoring with rolling median trendlines for anomaly detection.",
+    techStack: ["Python", "AWS", "GitHub Actions", "GCS"],
+    category: "Backend",
+    github: "",
+    liveDemo: "",
+    images: [
+      "https://placehold.co/800x450/059669/a7f3d0?text=Benchmark+Dashboard",
+      "https://placehold.co/800x450/047857/6ee7b7?text=Performance+Charts"
+    ]
+  },
+  {
+    id: 5,
+    title: "CI/CD Release Automation",
+    shortDescription: "End-to-end automated release pipelines for large-scale engineering organizations.",
+    fullDescription: "Built at PlayStation — automated release pipelines with conventional commits, Docker image builds, and Helm chart deployments across hundreds of production repositories. The system includes automated versioning, comprehensive test coverage, and drastically reduced deployment times for thousands of engineers.",
+    techStack: ["Docker", "GitHub Actions", "Python"],
+    category: "Backend",
+    github: "",
+    liveDemo: "",
+    images: [
+      "https://placehold.co/800x450/dc2626/fca5a5?text=Pipeline+Architecture",
+      "https://placehold.co/800x450/b91c1c/fecaca?text=Deployment+Flow"
     ]
   },
   {
     id: 6,
-    title: "Task Management Board",
-    shortDescription: "A Kanban-style project board with drag-and-drop, labels, and team collaboration.",
-    fullDescription: "Built a project management application inspired by Trello. Features include drag-and-drop card organization across customizable columns, label and priority tagging, due date tracking with reminders, team member assignment, activity logs, and board-level analytics. Supports multiple boards per user with archiving capabilities.",
-    techStack: ["React", "Java", "Spring Boot", "MySQL"],
+    title: "Portfolio Website",
+    shortDescription: "This site — a responsive React portfolio with dark mode, filtering, and an interactive guestbook.",
+    fullDescription: "A personal portfolio website built with React and Vite. Features include dark/light mode with localStorage persistence, a projects page with multi-criteria filtering (search, category, tech stack), and an interactive guestbook with emoji reactions, sorting, and search. Fully responsive with scroll-triggered animations and deployed to GitHub Pages.",
+    techStack: ["React", "CSS", "Vite"],
     category: "Frontend",
-    github: "https://github.com/esh-07",
-    liveDemo: "https://esh-07.github.io",
+    github: "https://github.com/esh-07/portfolio",
+    liveDemo: "https://esh-07.github.io/portfolio/",
     images: [
-      "https://placehold.co/800x450/0284c7/ffffff?text=Kanban+Board",
-      "https://placehold.co/800x450/0369a1/ffffff?text=Card+Detail+View"
-    ]
-  },
-  {
-    id: 7,
-    title: "Memory Allocator",
-    shortDescription: "A custom heap memory allocator implementing malloc, free, and realloc in C.",
-    fullDescription: "Implemented a dynamic memory allocator as part of a systems programming course. The allocator uses a segregated free list strategy with immediate coalescing for reduced fragmentation. Supports malloc, calloc, realloc, and free operations. Achieved high throughput and memory utilization scores on benchmark tests. Includes debugging utilities for heap consistency checking.",
-    techStack: ["C", "Linux", "GDB", "Make"],
-    category: "Systems",
-    github: "https://github.com/esh-07",
-    liveDemo: "",
-    images: [
-      "https://placehold.co/800x450/b91c1c/ffffff?text=Memory+Layout",
-      "https://placehold.co/800x450/991b1b/ffffff?text=Benchmark+Results"
-    ]
-  },
-  {
-    id: 8,
-    title: "Weather Forecast App",
-    shortDescription: "A weather app with 7-day forecasts, location search, and interactive radar maps.",
-    fullDescription: "Developed a weather application that fetches real-time data from the OpenWeatherMap API. Features include current conditions display, 7-day forecasts with hourly breakdowns, location search with autocomplete, interactive radar maps, severe weather alerts, and the ability to save favorite locations. The app supports geolocation for automatic local weather detection.",
-    techStack: ["React", "CSS", "REST API"],
-    category: "Frontend",
-    github: "https://github.com/esh-07",
-    liveDemo: "https://esh-07.github.io",
-    images: [
-      "https://placehold.co/800x450/0ea5e9/ffffff?text=Weather+Dashboard",
-      "https://placehold.co/800x450/06b6d4/ffffff?text=Radar+Map"
+      "https://placehold.co/800x450/2563eb/bfdbfe?text=Portfolio+Home",
+      "https://placehold.co/800x450/1d4ed8/93c5fd?text=Projects+Page"
     ]
   }
 ];
 
-export const categories = ["All", "Frontend", "Backend", "ML", "Systems"];
+export const categories = ["All", "Frontend", "Backend", "Full-Stack", "ML", "Systems"];
 
 export const allTechStacks = [
   ...new Set(projects.flatMap((p) => p.techStack))
