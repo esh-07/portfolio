@@ -1,42 +1,39 @@
 import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import RBNavbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
 import ThemeToggle from './ThemeToggle';
 import '../styles/navbar.css';
 
 function Navbar({ theme, toggleTheme }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const closeMenu = () => setMenuOpen(false);
-
   return (
-    <nav className="navbar" role="navigation" aria-label="Main navigation">
-      <div className="navbar-inner">
-        <NavLink to="/" className="navbar-logo" onClick={closeMenu}>
+    <RBNavbar expand="lg" className="navbar-portfolio" sticky="top" role="navigation" aria-label="Main navigation">
+      <Container fluid className="navbar-inner-portfolio">
+        <RBNavbar.Brand as={NavLink} to="/" end className="navbar-logo">
           EC
-        </NavLink>
-
-        <button
-          className="hamburger"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation menu"
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? '✕' : '☰'}
-        </button>
-
-        <div className={`navbar-menu ${menuOpen ? 'open' : ''}`}>
-          <ul className="navbar-links">
-            <li><NavLink to="/" onClick={closeMenu}>Home</NavLink></li>
-            <li><NavLink to="/about" onClick={closeMenu}>About</NavLink></li>
-            <li><NavLink to="/projects" onClick={closeMenu}>Projects</NavLink></li>
-            <li><NavLink to="/guestbook" onClick={closeMenu}>Guestbook</NavLink></li>
-          </ul>
-          <div className="navbar-right">
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-          </div>
-        </div>
-      </div>
-    </nav>
+        </RBNavbar.Brand>
+        <RBNavbar.Toggle aria-controls="main-navbar-nav" aria-label="Toggle navigation menu" />
+        <RBNavbar.Collapse id="main-navbar-nav">
+          <Nav className="ms-auto navbar-nav-portfolio align-items-lg-center">
+            <Nav.Link as={NavLink} to="/" end>
+              Home
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/about">
+              About
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/projects">
+              Projects
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/guestbook">
+              Guestbook
+            </Nav.Link>
+            <div className="navbar-theme-wrap">
+              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            </div>
+          </Nav>
+        </RBNavbar.Collapse>
+      </Container>
+    </RBNavbar>
   );
 }
 

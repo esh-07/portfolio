@@ -6,6 +6,7 @@ import About from './pages/About';
 import Projects from './pages/Projects';
 import Guestbook from './pages/Guestbook';
 import './styles/global.css';
+import './styles/bootstrap-overrides.css';
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -14,6 +15,10 @@ function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute(
+      'data-bs-theme',
+      theme === 'light' ? 'light' : 'dark'
+    );
     localStorage.setItem('theme', theme);
   }, [theme]);
 

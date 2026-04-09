@@ -1,4 +1,7 @@
 import { useState, useMemo } from 'react';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import projects, { categories, allTechStacks } from '../data/projects';
 import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
@@ -52,16 +55,18 @@ function Projects() {
         </p>
 
         <div className="projects-controls">
-          <div className="search-bar">
-            <span className="search-icon">🔍</span>
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="Search projects"
-            />
-          </div>
+          <Form.Group className="search-bar mb-3" controlId="projects-search">
+            <Form.Label className="visually-hidden">Search projects</Form.Label>
+            <InputGroup>
+              <InputGroup.Text aria-hidden="true">🔍</InputGroup.Text>
+              <Form.Control
+                type="search"
+                placeholder="Search projects..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </InputGroup>
+          </Form.Group>
 
           <div className="filter-section">
             <span className="filter-label">Category</span>
@@ -94,9 +99,9 @@ function Projects() {
           </div>
 
           {hasFilters && (
-            <button className="clear-filters" onClick={clearFilters}>
+            <Button variant="outline-danger" size="sm" className="clear-filters-btn mb-2" onClick={clearFilters}>
               Clear All Filters
-            </button>
+            </Button>
           )}
         </div>
 

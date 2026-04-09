@@ -1,8 +1,14 @@
 import { useState, useMemo } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import GuestbookEntry from '../components/GuestbookEntry';
 import '../styles/guestbook.css';
 
 const MAX_CHARS = 280;
+const REPLY_MAX = 200;
 
 function Guestbook() {
   const [entries, setEntries] = useState([]);
@@ -23,12 +29,33 @@ function Guestbook() {
       timestamp: Date.now(),
       reactions: {},
       userReactions: [],
+      replies: [],
     };
 
     setEntries((prev) => [newEntry, ...prev]);
     setOwnIds((prev) => [...prev, newEntry.id]);
     setName('');
     setMessage('');
+  };
+
+  const handleAddReply = (entryId, replyName, replyMessage) => {
+    const trimmedName = replyName.trim();
+    const trimmedMsg = replyMessage.trim();
+    if (!trimmedName || !trimmedMsg) return;
+
+    const reply = {
+      id: Date.now(),
+      name: trimmedName,
+      message: trimmedMsg,
+      timestamp: Date.now(),
+    };
+
+    setEntries((prev) =>
+      prev.map((entry) => {
+        if (entry.id !== entryId) return entry;
+        return { ...entry, replies: [...(entry.replies || []), reply] };
+      })
+    );
   };
 
   const handleReact = (entryId, emoji) => {
@@ -60,18 +87,22 @@ function Guestbook() {
   };
 
   const totalReactions = (entry) =>
-    Object.values(entry.reactions).reduce((sum, n) => sum + n, 0);
+    Object.values(entry.reactions || {}).reduce((sum, n) => sum + n, 0);
 
   const sortedAndFiltered = useMemo(() => {
     let result = [...entries];
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (e) =>
-          e.name.toLowerCase().includes(q) ||
-          e.message.toLowerCase().includes(q)
-      );
+      result = result.filter((e) => {
+        const inMain =
+          e.name.toLowerCase().includes(q) || e.message.toLowerCase().includes(q);
+        const inReplies = (e.replies || []).some(
+          (r) =>
+            r.name.toLowerCase().includes(q) || r.message.toLowerCase().includes(q)
+        );
+        return inMain || inReplies;
+      });
     }
 
     switch (sortBy) {
@@ -98,67 +129,77 @@ function Guestbook() {
       <div className="container">
         <h1 className="page-title">Guestbook</h1>
         <p className="page-subtitle">
-          Leave a message, react to others, and say hello!
+          Leave a message, reply to threads, react with emojis, and search or sort the feed.
         </p>
 
-        <form className="guestbook-form" onSubmit={handleSubmit}>
-          <h3>Leave a Message</h3>
-          <div className="form-row">
-            <input
-              type="text"
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              maxLength={50}
-              required
-              aria-label="Your name"
-            />
-          </div>
-          <textarea
-            placeholder="Write your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value.slice(0, MAX_CHARS))}
-            rows={3}
-            required
-            aria-label="Your message"
-          />
-          <div className="form-footer">
-            <span className={`char-counter ${charsLeft < 30 ? 'warning' : ''}`}>
-              {charsLeft} characters remaining
-            </span>
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={!name.trim() || !message.trim()}
-            >
-              Post Message
-            </button>
-          </div>
-        </form>
+        <Card className="guestbook-form-card mb-4">
+          <Card.Body>
+            <Card.Title as="h2" className="guestbook-form-title h5">
+              Leave a Message
+            </Card.Title>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" controlId="guestbook-name">
+                <Form.Label className="portfolio-form-label">Your name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={50}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="guestbook-message">
+                <Form.Label className="portfolio-form-label">Your message</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  placeholder="Write your message..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value.slice(0, MAX_CHARS))}
+                  required
+                />
+              </Form.Group>
+              <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span className={`char-counter small ${charsLeft < 30 ? 'warning' : ''}`}>
+                  {charsLeft} characters remaining
+                </span>
+                <Button type="submit" variant="primary" disabled={!name.trim() || !message.trim()}>
+                  Post Message
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
 
-        <div className="guestbook-controls">
-          <input
-            type="text"
-            className="guestbook-search"
-            placeholder="Search messages..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Search guestbook messages"
-          />
-          <select
-            className="sort-select"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            aria-label="Sort messages"
-          >
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="reactions">Most Reacted</option>
-          </select>
-          <span className="message-count">
-            {entries.length} {entries.length === 1 ? 'message' : 'messages'}
-          </span>
-        </div>
+        <Row className="guestbook-controls g-2 mb-4 align-items-center">
+          <Col xs={12} md>
+            <Form.Group controlId="guestbook-search">
+              <Form.Label className="visually-hidden">Search guestbook messages</Form.Label>
+              <Form.Control
+                type="search"
+                placeholder="Search messages and replies..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={12} md="auto">
+            <Form.Group controlId="guestbook-sort">
+              <Form.Label className="visually-hidden">Sort messages</Form.Label>
+              <Form.Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="reactions">Most Reacted</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col xs={12} md="auto">
+            <span className="message-count small text-muted d-block py-md-2">
+              {entries.length} {entries.length === 1 ? 'message' : 'messages'}
+            </span>
+          </Col>
+        </Row>
 
         <div className="guestbook-feed">
           {sortedAndFiltered.length > 0 ? (
@@ -168,7 +209,9 @@ function Guestbook() {
                 entry={entry}
                 onReact={handleReact}
                 onDelete={handleDelete}
+                onAddReply={handleAddReply}
                 canDelete={ownIds.includes(entry.id)}
+                replyMaxLength={REPLY_MAX}
               />
             ))
           ) : (

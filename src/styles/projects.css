@@ -8,40 +8,22 @@
   margin-bottom: 32px;
 }
 
-.search-bar {
-  position: relative;
-  margin-bottom: 20px;
+.search-bar .input-group-text {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
 }
 
-.search-bar input {
-  width: 100%;
-  padding: 12px 16px 12px 44px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+.search-bar .form-control {
+  border-color: var(--color-border);
   background: var(--color-bg-card);
   color: var(--color-text);
   font-size: 0.95rem;
-  transition: all var(--transition);
-  outline: none;
 }
 
-.search-bar input:focus {
+.search-bar .form-control:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-light);
-}
-
-.search-bar input::placeholder {
-  color: var(--color-text-muted);
-}
-
-.search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--color-text-muted);
-  font-size: 1rem;
-  pointer-events: none;
 }
 
 .filter-section {
@@ -87,22 +69,9 @@
   border-color: var(--color-primary);
 }
 
-.clear-filters {
-  padding: 6px 16px;
+.clear-filters-btn {
   border-radius: 20px;
-  border: 1px solid var(--color-danger);
-  background: transparent;
-  color: var(--color-danger);
-  font-size: 0.85rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition);
-  margin-top: 12px;
-}
-
-.clear-filters:hover {
-  background: var(--color-danger);
-  color: #ffffff;
 }
 
 /* Project Grid */
@@ -120,22 +89,36 @@
   grid-column: 1 / -1;
 }
 
-/* Project Card */
-.project-card {
+/* Project Card (react-bootstrap Card) */
+.project-card.card {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: 24px;
   cursor: pointer;
   transition: all var(--transition);
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 1px 3px var(--color-shadow);
 }
 
-.project-card:hover {
+.project-card.card:hover {
   border-color: var(--color-primary);
   box-shadow: 0 8px 24px var(--color-shadow);
   transform: translateY(-3px);
+}
+
+.project-card.card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.project-card-body.card-body {
+  padding: 1.5rem;
+}
+
+.project-card-category-badge {
+  font-size: 0.75rem !important;
+  font-weight: 600;
+  background: var(--color-primary-light) !important;
+  color: var(--color-primary) !important;
 }
 
 .project-card-header {
@@ -186,56 +169,20 @@
   font-weight: 500;
 }
 
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-overlay);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  animation: fadeIn 0.2s ease;
-}
-
-.modal-content {
-  background: var(--color-bg);
+/* Project detail modal (react-bootstrap) */
+.project-modal-content {
   border-radius: var(--radius-lg);
-  max-width: 720px;
-  width: 100%;
   max-height: 85vh;
   overflow-y: auto;
-  position: relative;
-  animation: slideUp 0.3s ease;
 }
 
-.modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: all var(--transition);
-  z-index: 1;
-}
-
-.modal-close:hover {
-  background: var(--color-danger);
-  color: #ffffff;
-  border-color: var(--color-danger);
+.modal-tech-badge {
+  font-size: 0.8rem !important;
+  font-weight: 500;
+  padding: 0.4em 0.75em !important;
+  background: var(--color-tag-bg) !important;
+  color: var(--color-tag-text) !important;
+  border-radius: 14px !important;
 }
 
 .modal-images {
@@ -343,28 +290,12 @@
   background: var(--color-primary-hover);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (max-width: 768px) {
   .projects-grid {
     grid-template-columns: 1fr;
   }
 
-  .modal-content {
+  .project-modal-content {
     max-height: 90vh;
   }
 

@@ -52,43 +52,51 @@
   animation: fadeSlideUp 0.6s ease 0.55s forwards;
 }
 
-.home-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.home-links .home-btn-primary,
+.home-links .home-btn-outline {
   padding: 10px 22px;
   border-radius: var(--radius);
   font-size: 0.92rem;
   font-weight: 500;
-  transition: all var(--transition);
   text-decoration: none;
 }
 
-.home-link.primary {
+.home-links .home-btn-primary {
   background: var(--color-primary);
-  color: #ffffff;
+  border-color: var(--color-primary);
 }
 
-.home-link.primary:hover {
+.home-links .home-btn-primary:hover {
   background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--color-shadow-lg);
 }
 
-.home-link.secondary {
-  background: var(--color-bg-secondary);
+.home-links .home-btn-outline {
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border-color: var(--color-border);
+  background: var(--color-bg-secondary);
 }
 
-.home-link.secondary:hover {
+.home-links .home-btn-outline:hover {
   border-color: var(--color-primary);
   color: var(--color-primary);
+  background: var(--color-bg-secondary);
   transform: translateY(-2px);
 }
 
-.home-link svg, .home-link .link-icon {
-  font-size: 1.1rem;
+/* So outline-secondary (Email) matches neutral secondary links */
+.home-links .home-btn-outline.btn-outline-secondary {
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background: var(--color-bg-secondary);
+}
+
+.home-links .home-btn-outline.btn-outline-secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-light);
 }
 
 @keyframes fadeSlideUp {

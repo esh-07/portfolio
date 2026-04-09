@@ -1,60 +1,65 @@
-import { useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
+import '../styles/projects.css';
 
 function ProjectModal({ project, onClose }) {
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleEsc);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-      document.body.style.overflow = '';
-    };
-  }, [onClose]);
-
   if (!project) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={project.title}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Close modal">✕</button>
-
+    <Modal
+      show
+      onHide={onClose}
+      size="lg"
+      centered
+      className="project-bs-modal"
+      contentClassName="project-modal-content"
+      aria-labelledby="project-modal-title"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="project-modal-title">{project.title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="pt-0">
         {project.images && project.images.length > 0 && (
-          <div className="modal-images">
+          <div className="modal-images mb-3">
             {project.images.map((img, idx) => (
               <img key={idx} src={img} alt={`${project.title} screenshot ${idx + 1}`} />
             ))}
           </div>
         )}
 
-        <div className="modal-body">
-          <h2 className="modal-title">{project.title}</h2>
-          <p className="modal-category">{project.category}</p>
-          <p className="modal-description">{project.fullDescription}</p>
+        <p className="modal-category mb-3">{project.category}</p>
+        <p className="modal-description">{project.fullDescription}</p>
 
-          <p className="modal-tech-title">Tech Stack</p>
-          <div className="modal-tech-tags">
-            {project.techStack.map((tech) => (
-              <span className="modal-tech-tag" key={tech}>{tech}</span>
-            ))}
-          </div>
-
-          <div className="modal-links">
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noopener noreferrer" className="modal-link github-link">
-                GitHub →
-              </a>
-            )}
-            {project.liveDemo && (
-              <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="modal-link demo-link">
-                Live Demo →
-              </a>
-            )}
-          </div>
+        <p className="modal-tech-title">Tech Stack</p>
+        <div className="modal-tech-tags mb-4">
+          {project.techStack.map((tech) => (
+            <Badge key={tech} bg="secondary" pill className="modal-tech-badge me-1 mb-1">
+              {tech}
+            </Badge>
+          ))}
         </div>
-      </div>
-    </div>
+
+        <div className="modal-links d-flex flex-wrap gap-2">
+          {project.github && (
+            <Button
+              variant="outline-primary"
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              as="a"
+            >
+              GitHub →
+            </Button>
+          )}
+          {project.liveDemo && (
+            <Button variant="primary" href={project.liveDemo} target="_blank" rel="noopener noreferrer" as="a">
+              Live Demo →
+            </Button>
+          )}
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 }
 

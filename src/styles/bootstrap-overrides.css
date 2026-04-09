@@ -1,0 +1,177 @@
+/* Aligns React Bootstrap with portfolio tokens; load after global.css. */
+html {
+  --bs-body-font-family: var(--font-family);
+  --bs-font-sans-serif: var(--font-family);
+  --bs-primary: var(--color-primary);
+  --bs-secondary: var(--color-text-muted);
+  --bs-success: var(--color-success);
+  --bs-danger: var(--color-danger);
+  --bs-body-bg: var(--color-bg);
+  --bs-body-color: var(--color-text);
+  --bs-emphasis-color: var(--color-text);
+  --bs-secondary-color: var(--color-text-secondary);
+  --bs-tertiary-color: var(--color-text-muted);
+  --bs-heading-color: var(--color-text);
+  --bs-border-color: var(--color-border);
+  --bs-border-radius: var(--radius);
+  --bs-border-radius-sm: var(--radius-sm);
+  --bs-border-radius-lg: var(--radius-lg);
+  --bs-link-color: var(--color-primary);
+  --bs-link-hover-color: var(--color-primary-hover);
+  --bs-card-bg: var(--color-bg-card);
+  --bs-card-border-color: var(--color-border);
+  --bs-card-cap-bg: transparent;
+  --bs-card-box-shadow: 0 1px 2px var(--color-shadow);
+  --bs-modal-bg: var(--color-bg);
+  --bs-modal-border-color: var(--color-border);
+  --bs-modal-header-border-color: var(--color-border);
+  --bs-modal-footer-border-color: var(--color-border);
+  --bs-input-bg: var(--color-bg);
+  --bs-input-border-color: var(--color-border);
+  --bs-input-color: var(--color-text);
+  --bs-input-focus-border-color: var(--color-primary);
+  --bs-input-focus-box-shadow: 0 0 0 3px var(--color-primary-light);
+  --bs-form-control-bg: var(--color-bg);
+  --bs-list-group-bg: var(--color-bg-card);
+  --bs-list-group-border-color: var(--color-border);
+}
+
+html[data-theme='light'] {
+  --bs-primary-rgb: 37, 99, 235;
+}
+
+html[data-theme='dark'] {
+  --bs-primary-rgb: 59, 130, 246;
+}
+
+/* Primary / outline buttons track site blues */
+.btn-primary {
+  --bs-btn-bg: var(--color-primary);
+  --bs-btn-border-color: var(--color-primary);
+  --bs-btn-hover-bg: var(--color-primary-hover);
+  --bs-btn-hover-border-color: var(--color-primary-hover);
+  --bs-btn-active-bg: var(--color-primary-hover);
+  --bs-btn-active-border-color: var(--color-primary-hover);
+  --bs-btn-disabled-bg: var(--color-primary);
+  --bs-btn-disabled-border-color: var(--color-primary);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--color-primary);
+  --bs-btn-border-color: var(--color-primary);
+  --bs-btn-hover-bg: var(--color-primary-light);
+  --bs-btn-hover-border-color: var(--color-primary);
+  --bs-btn-hover-color: var(--color-primary);
+  --bs-btn-active-bg: var(--color-primary-light);
+  --bs-btn-active-border-color: var(--color-primary);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+}
+
+.btn-outline-secondary {
+  --bs-btn-color: var(--color-text-secondary);
+  --bs-btn-border-color: var(--color-border);
+  --bs-btn-hover-bg: var(--color-primary-light);
+  --bs-btn-hover-border-color: var(--color-primary);
+  --bs-btn-hover-color: var(--color-primary);
+  --bs-btn-active-bg: var(--color-primary-light);
+  --bs-btn-active-border-color: var(--color-primary);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+}
+
+.btn-outline-danger {
+  --bs-btn-color: var(--color-danger);
+  --bs-btn-border-color: var(--color-danger);
+  --bs-btn-hover-bg: var(--color-danger);
+  --bs-btn-hover-border-color: var(--color-danger);
+  --bs-btn-hover-color: #fff;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+}
+
+/* Navbar: match original 70px shell */
+.navbar-portfolio {
+  min-height: 70px;
+  align-items: center;
+}
+
+.navbar-portfolio .navbar-collapse {
+  align-items: center;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-portfolio .navbar-collapse {
+    margin-top: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+/* Project modal */
+.project-bs-modal .modal-content {
+  border: 1px solid var(--color-border);
+  box-shadow: 0 20px 50px var(--color-shadow-lg);
+}
+
+.project-bs-modal .modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-bs-modal .modal-title {
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.project-bs-modal .modal-header .btn-close {
+  opacity: 0.65;
+}
+
+.project-bs-modal .modal-header .btn-close:hover {
+  opacity: 1;
+}
+
+.project-bs-modal .modal-body {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Search input group: one continuous rounded field */
+.search-bar .input-group {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 2px var(--color-shadow);
+}
+
+.search-bar .input-group-text {
+  border-right: none;
+}
+
+.search-bar .form-control {
+  border-left: none;
+}
+
+.search-bar .form-control:focus {
+  box-shadow: none;
+  border-color: var(--color-border);
+}
+
+.search-bar .input-group:focus-within {
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.search-bar .input-group:focus-within .input-group-text,
+.search-bar .input-group:focus-within .form-control {
+  border-color: var(--color-primary);
+}
+
+/* Muted text inside guest cards */
+.guestbook-entry-card .text-muted {
+  color: var(--color-text-muted) !important;
+}

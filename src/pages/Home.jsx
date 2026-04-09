@@ -1,3 +1,5 @@
+import Button from 'react-bootstrap/Button';
+import Stack from 'react-bootstrap/Stack';
 import '../styles/home.css';
 
 function Home() {
@@ -10,30 +12,36 @@ function Home() {
           Computer Science &amp; Data Science @ UW–Madison.
           Building software that scales — from low-latency systems to full-stack applications.
         </p>
-        <div className="home-links">
-          <a
+        <Stack direction="horizontal" gap={3} className="home-links flex-wrap justify-content-center">
+          <Button
+            variant="primary"
             href="https://github.com/esh-07"
             target="_blank"
             rel="noopener noreferrer"
-            className="home-link primary"
+            as="a"
+            className="home-btn-primary"
           >
             GitHub
-          </a>
-          <a
-            href="https://linkedin.com/in/"
+          </Button>
+          <Button
+            variant="outline-primary"
+            href="https://www.linkedin.com/in/eshaan-chaturvedi-9718851a1"
             target="_blank"
             rel="noopener noreferrer"
-            className="home-link secondary"
+            as="a"
+            className="home-btn-outline"
           >
             LinkedIn
-          </a>
-          <a
+          </Button>
+          <Button
+            variant="outline-secondary"
             href="mailto:eshaanchaturvedi@gmail.com"
-            className="home-link secondary"
+            as="a"
+            className="home-btn-outline"
           >
             Email Me
-          </a>
-        </div>
+          </Button>
+        </Stack>
       </div>
     </section>
   );
