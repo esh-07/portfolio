@@ -1,55 +1,74 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
-import ScrollProgress from './components/ScrollProgress';
-import BackToTop from './components/BackToTop';
-import CommandPalette from './components/CommandPalette';
-import SkipLink from './components/SkipLink';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Guestbook from './pages/Guestbook';
-import './styles/global.css';
-import './styles/bootstrap-overrides.css';
-import './styles/extras.css';
+import { useEffect, useState } from 'react';
+import Nav from './components/Nav.jsx';
+import Hero from './components/Hero.jsx';
+import Marquee from './components/Marquee.jsx';
+import Experience from './components/Experience.jsx';
+import Projects from './components/Projects.jsx';
+import Toolkit from './components/Toolkit.jsx';
+import Contact from './components/Contact.jsx';
+import CommandPalette from './components/CommandPalette.jsx';
+import ScrollProgress from './components/ScrollProgress.jsx';
+import Preloader from './components/Preloader.jsx';
+import Cursor from './components/Cursor.jsx';
+import useReveal from './hooks/useReveal.js';
+import useTheme from './hooks/useTheme.js';
+import useLenis from './hooks/useLenis.js';
+
+const shouldBoot = () =>
+  !sessionStorage.getItem('booted') &&
+  !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light';
-  });
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [booting, setBooting] = useState(shouldBoot);
+  const { theme, toggleTheme } = useTheme();
+  useLenis();
+  useReveal();
 
+  // Lock scroll during boot; flag is-booted so load-in animations start
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute(
-      'data-bs-theme',
-      theme === 'light' ? 'light' : 'dark'
-    );
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
+    const root = document.documentElement;
+    root.style.overflow = booting ? 'hidden' : '';
+    if (!booting) root.classList.add('is-booted');
+  }, [booting]);
 
   return (
     <>
-      <SkipLink targetId="main-content" />
-      <ScrollToTop />
+      {booting && (
+        <Preloader
+          onExit={() => document.documentElement.classList.add('is-booted')}
+          onDone={() => {
+            sessionStorage.setItem('booted', '1');
+            setBooting(false);
+          }}
+        />
+      )}
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
       <ScrollProgress />
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <main id="main-content" tabIndex={-1}>
-        <Routes>
-          <Route path="/" element={<Home onToggleTheme={toggleTheme} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/guestbook" element={<Guestbook />} />
-        </Routes>
+      <Cursor />
+      <Nav theme={theme} toggleTheme={toggleTheme} onOpenPalette={() => setPaletteOpen(true)} />
+      <main id="main" tabIndex={-1}>
+        <Hero />
+        <Marquee />
+        <Experience />
+        <Projects />
+        <Toolkit />
+        <Contact />
       </main>
-      <Footer />
-      <BackToTop />
-      <CommandPalette theme={theme} onToggleTheme={toggleTheme} />
+      <footer className="footer">
+        <div className="footer__inner container">
+          <p>© {new Date().getFullYear()} Eshaan Chaturvedi</p>
+          <p className="footer__time">Madison, WI</p>
+        </div>
+      </footer>
+      <CommandPalette
+        open={paletteOpen}
+        onOpen={() => setPaletteOpen(true)}
+        onClose={() => setPaletteOpen(false)}
+        toggleTheme={toggleTheme}
+      />
     </>
   );
 }

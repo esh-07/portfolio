@@ -1,199 +1,207 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import projects from '../data/projects';
-import '../styles/command-palette.css';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { LINKS, RESUME_URL } from '../data/content.js';
+import { scrollToTarget } from '../hooks/useLenis.js';
 
-function CommandPalette({ theme, onToggleTheme }) {
-  const [open, setOpen] = useState(false);
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const scrollToSection = (id) => scrollToTarget(document.getElementById(id));
+
+const buildActions = (toggleTheme) => [
+  { label: 'Go to Experience', hint: 'Section', run: () => scrollToSection('experience') },
+  { label: 'Go to Projects', hint: 'Section', run: () => scrollToSection('projects') },
+  { label: 'Go to Toolkit', hint: 'Section', run: () => scrollToSection('toolkit') },
+  { label: 'Go to Contact', hint: 'Section', run: () => scrollToSection('contact') },
+  {
+    label: 'Open Resume',
+    hint: 'Link',
+    run: () => window.open(RESUME_URL, '_blank', 'noopener'),
+  },
+  {
+    label: 'Open GitHub',
+    hint: 'Link',
+    run: () => window.open(LINKS.github, '_blank', 'noopener'),
+  },
+  {
+    label: 'Open LinkedIn',
+    hint: 'Link',
+    run: () => window.open(LINKS.linkedin, '_blank', 'noopener'),
+  },
+  {
+    label: 'Copy email address',
+    hint: 'Action',
+    run: () => navigator.clipboard?.writeText(LINKS.email),
+  },
+  {
+    label: 'Send an email',
+    hint: 'Action',
+    run: () => {
+      window.location.href = `mailto:${LINKS.email}`;
+    },
+  },
+  { label: 'Toggle theme', hint: 'Action', run: toggleTheme },
+];
+
+// Subsequence fuzzy match; consecutive runs and word starts score higher.
+const fuzzyScore = (query, label) => {
+  const q = query.toLowerCase();
+  const l = label.toLowerCase();
+  let qi = 0;
+  let streak = 0;
+  let score = 0;
+  for (let li = 0; li < l.length && qi < q.length; li += 1) {
+    if (l[li] === q[qi]) {
+      streak += 1;
+      score += streak + (li === 0 || l[li - 1] === ' ' ? 4 : 0);
+      qi += 1;
+    } else {
+      streak = 0;
+    }
+  }
+  return qi === q.length ? score : -1;
+};
+
+function PaletteDialog({ onClose, toggleTheme }) {
   const [query, setQuery] = useState('');
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [active, setActive] = useState(0);
+  const [exiting, setExiting] = useState(false);
   const inputRef = useRef(null);
-  const listRef = useRef(null);
-  const navigate = useNavigate();
 
-  const close = useCallback(() => {
-    setOpen(false);
-    setQuery('');
-    setActiveIndex(0);
-  }, []);
+  const actions = useMemo(() => buildActions(toggleTheme), [toggleTheme]);
+  const results = useMemo(() => {
+    const q = query.trim();
+    if (!q) return actions;
+    return actions
+      .map((action) => ({ action, score: fuzzyScore(q, action.label) }))
+      .filter(({ score }) => score >= 0)
+      .sort((a, b) => b.score - a.score)
+      .map(({ action }) => action);
+  }, [actions, query]);
 
-  const allCommands = useMemo(() => {
-    const navCommands = [
-      { id: 'nav-home', label: 'Go to Home', hint: 'Navigation', action: () => navigate('/') },
-      { id: 'nav-about', label: 'Go to About', hint: 'Navigation', action: () => navigate('/about') },
-      { id: 'nav-projects', label: 'Go to Projects', hint: 'Navigation', action: () => navigate('/projects') },
-      { id: 'nav-guestbook', label: 'Go to Guestbook', hint: 'Navigation', action: () => navigate('/guestbook') },
-    ];
-
-    const actionCommands = [
-      {
-        id: 'theme-toggle',
-        label: `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`,
-        hint: 'Theme',
-        action: () => onToggleTheme(),
-      },
-      {
-        id: 'open-github',
-        label: 'Open GitHub profile',
-        hint: 'External',
-        action: () => window.open('https://github.com/esh-07', '_blank', 'noopener,noreferrer'),
-      },
-      {
-        id: 'open-linkedin',
-        label: 'Open LinkedIn',
-        hint: 'External',
-        action: () => window.open('https://www.linkedin.com/in/eshaan-chaturvedi-9718851a1', '_blank', 'noopener,noreferrer'),
-      },
-      {
-        id: 'send-email',
-        label: 'Email Eshaan',
-        hint: 'External',
-        action: () => { window.location.href = 'mailto:eshaanchaturvedi@gmail.com'; },
-      },
-    ];
-
-    const projectCommands = projects.map((p) => ({
-      id: `project-${p.id}`,
-      label: `Open project: ${p.title}`,
-      hint: p.category,
-      action: () => navigate('/projects'),
-    }));
-
-    return [...navCommands, ...actionCommands, ...projectCommands];
-  }, [navigate, onToggleTheme, theme]);
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return allCommands;
-    return allCommands.filter(
-      (c) =>
-        c.label.toLowerCase().includes(q) ||
-        c.hint.toLowerCase().includes(q)
-    );
-  }, [query, allCommands]);
-
-  // Global keyboard trigger
+  // Focus the input, lock body scroll, and restore both on close
   useEffect(() => {
-    const handler = (e) => {
-      const isMac = navigator.platform.toUpperCase().includes('MAC');
-      const modKey = isMac ? e.metaKey : e.ctrlKey;
-      if (modKey && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setOpen((prev) => !prev);
-        return;
-      }
-      const tag = (e.target.tagName || '').toLowerCase();
-      const isTyping = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
-      if (e.key === '/' && !isTyping && !open) {
-        e.preventDefault();
-        setOpen(true);
+    const previouslyFocused = document.activeElement;
+    inputRef.current?.focus();
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = 'hidden';
+    return () => {
+      root.style.overflow = previousOverflow;
+      if (previouslyFocused instanceof HTMLElement) {
+        previouslyFocused.focus({ preventScroll: true });
       }
     };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [open]);
+  }, []);
 
-  // Focus input on open
-  useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 50);
-    }
-  }, [open]);
-
-  // Scroll active item into view
-  useEffect(() => {
-    if (!listRef.current) return;
-    const el = listRef.current.querySelector(`[data-index="${activeIndex}"]`);
-    el?.scrollIntoView({ block: 'nearest' });
-  }, [activeIndex]);
-
-  const runCommand = (cmd) => {
-    if (!cmd) return;
-    cmd.action();
-    close();
+  const requestClose = () => {
+    if (exiting) return;
+    setExiting(true);
+    window.setTimeout(onClose, prefersReducedMotion() ? 0 : 160);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'ArrowDown') {
+  const runAction = (action) => {
+    requestClose();
+    action.run();
+  };
+
+  const moveActive = (delta) => {
+    const next = Math.min(Math.max(active + delta, 0), results.length - 1);
+    setActive(next);
+    document.getElementById(`palette-option-${next}`)?.scrollIntoView({ block: 'nearest' });
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Escape') {
       e.preventDefault();
-      setActiveIndex((i) => Math.min(i + 1, filtered.length - 1));
+      requestClose();
+    } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      requestClose();
+    } else if (e.key === 'Tab') {
+      // The input is the only tabbable element; keep focus inside the dialog
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      moveActive(1);
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setActiveIndex((i) => Math.max(i - 1, 0));
-    } else if (e.key === 'Enter') {
+      moveActive(-1);
+    } else if (e.key === 'Enter' && results[active]) {
       e.preventDefault();
-      runCommand(filtered[activeIndex]);
+      runAction(results[active]);
     }
   };
 
   return (
-    <Modal
-      show={open}
-      onHide={close}
-      centered
-      backdropClassName="cp-backdrop"
-      contentClassName="cp-content"
-      dialogClassName="cp-dialog"
-      aria-labelledby="cp-search-label"
+    <div
+      className={`palette-overlay${exiting ? ' is-exiting' : ''}`}
+      onMouseDown={requestClose}
     >
-      <div className="cp-search-row">
-        <span className="cp-search-icon" aria-hidden="true">⌘</span>
-        <Form.Label htmlFor="cp-search-input" id="cp-search-label" className="visually-hidden">
-          Search commands and pages
-        </Form.Label>
-        <Form.Control
+      <div
+        className="palette"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Command palette"
+        onMouseDown={(e) => e.stopPropagation()}
+        onKeyDown={onKeyDown}
+      >
+        <input
           ref={inputRef}
-          id="cp-search-input"
-          type="search"
-          placeholder="Type a command or search... (Esc to close)"
+          className="palette__input"
+          type="text"
+          placeholder="Type a command or search…"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setActiveIndex(0);
+            setActive(0);
           }}
-          onKeyDown={handleKeyDown}
-          autoComplete="off"
-          spellCheck={false}
-          className="cp-input"
+          role="combobox"
+          aria-expanded="true"
+          aria-controls="palette-list"
+          aria-activedescendant={results[active] ? `palette-option-${active}` : undefined}
         />
-        <span className="cp-kbd-hint" aria-hidden="true">ESC</span>
-      </div>
-
-      <ul
-        ref={listRef}
-        className="cp-list"
-        role="listbox"
-        aria-label="Available commands"
-      >
-        {filtered.length === 0 ? (
-          <li className="cp-empty">No matches for &ldquo;{query}&rdquo;</li>
-        ) : (
-          filtered.map((cmd, i) => (
+        <ul className="palette__list" id="palette-list" role="listbox">
+          {results.length === 0 && <li className="palette__empty">No matching commands</li>}
+          {results.map((action, i) => (
             <li
-              key={cmd.id}
-              data-index={i}
+              key={action.label}
+              id={`palette-option-${i}`}
               role="option"
-              aria-selected={i === activeIndex}
-              className={`cp-item ${i === activeIndex ? 'active' : ''}`}
-              onMouseEnter={() => setActiveIndex(i)}
-              onClick={() => runCommand(cmd)}
+              aria-selected={i === active}
+              className="palette__item"
+              onMouseEnter={() => setActive(i)}
+              onClick={() => runAction(action)}
             >
-              <span className="cp-item-label">{cmd.label}</span>
-              <span className="cp-item-hint">{cmd.hint}</span>
+              <span>{action.label}</span>
+              <span className="palette__hint">{action.hint}</span>
             </li>
-          ))
-        )}
-      </ul>
-
-      <div className="cp-footer">
-        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-        <span><kbd>↵</kbd> select</span>
-        <span><kbd>esc</kbd> close</span>
+          ))}
+        </ul>
+        <p className="palette__foot" aria-hidden="true">
+          <span>↑↓ navigate</span>
+          <span>↵ select</span>
+          <span>esc close</span>
+        </p>
       </div>
-    </Modal>
+    </div>
   );
+}
+
+function CommandPalette({ open, onOpen, onClose, toggleTheme }) {
+  // Global ⌘K / Ctrl+K to open; the dialog handles the closing direction
+  useEffect(() => {
+    const onKey = (e) => {
+      if (!open && (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        onOpen();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onOpen]);
+
+  if (!open) return null;
+  return <PaletteDialog onClose={onClose} toggleTheme={toggleTheme} />;
 }
 
 export default CommandPalette;
