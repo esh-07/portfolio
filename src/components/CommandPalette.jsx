@@ -1,11 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LINKS, RESUME_URL } from '../data/content.js';
-import { scrollToTarget } from '../hooks/useLenis.js';
 
 const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const scrollToSection = (id) => scrollToTarget(document.getElementById(id));
+// Instant jumps: the honest brutalist scroll
+const scrollToSection = (id) => document.getElementById(id)?.scrollIntoView({ block: 'start' });
+
+const setAllDetails = (open) => {
+  document.querySelectorAll('main details').forEach((d) => {
+    d.open = open;
+  });
+};
 
 const buildActions = (toggleTheme) => [
   { label: 'Go to Experience', hint: 'Section', run: () => scrollToSection('experience') },
@@ -39,6 +45,8 @@ const buildActions = (toggleTheme) => [
       window.location.href = `mailto:${LINKS.email}`;
     },
   },
+  { label: 'Expand all sections', hint: 'Action', run: () => setAllDetails(true) },
+  { label: 'Collapse all sections', hint: 'Action', run: () => setAllDetails(false) },
   { label: 'Toggle theme', hint: 'Action', run: toggleTheme },
 ];
 

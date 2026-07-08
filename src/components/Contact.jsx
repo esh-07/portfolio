@@ -20,42 +20,30 @@ function Contact() {
   };
 
   return (
-    <section className="section container" id="contact" aria-labelledby="contact-title">
-      <div className="section__head" data-reveal>
-        <span className="section__num" aria-hidden="true">
-          04
-        </span>
-        <h2 className="section__title" id="contact-title">
-          Contact
+    <section id="contact" aria-labelledby="contact-title">
+      <div className="secbar">
+        <h2 className="secbar__title" id="contact-title">
+          04 // CONTACT
         </h2>
       </div>
-      <div className="contact" data-reveal>
-        <a className="contact__email u-link" href={`mailto:${LINKS.email}`}>
-          {LINKS.email.split('@')[0]}
-          <wbr />@{LINKS.email.split('@')[1]}
+      <div className="contact">
+        <a className="contact__email b-link" href={`mailto:${LINKS.email}`}>
+          {LINKS.email}
         </a>
-        <ul className="contact__links">
-          <li>
-            <button type="button" className="contact__copy u-link" onClick={copyEmail}>
-              {copied ? 'Copied' : 'Copy email'}
-            </button>
-          </li>
-          <li>
-            <a className="u-link" href={LINKS.github} target="_blank" rel="noreferrer">
-              GitHub<span aria-hidden="true"> ↗</span>
-            </a>
-          </li>
-          <li>
-            <a className="u-link" href={LINKS.linkedin} target="_blank" rel="noreferrer">
-              LinkedIn<span aria-hidden="true"> ↗</span>
-            </a>
-          </li>
-          <li>
-            <a className="u-link" href={RESUME_URL} target="_blank" rel="noreferrer">
-              Resume<span aria-hidden="true"> ↗</span>
-            </a>
-          </li>
-        </ul>
+        <div className="contact__row">
+          <button type="button" className="b-btn" onClick={copyEmail}>
+            [{copied ? 'COPIED' : 'COPY_EMAIL'}]
+          </button>
+          <a className="b-link" href={LINKS.github} target="_blank" rel="noreferrer">
+            [GITHUB ↗]
+          </a>
+          <a className="b-link" href={LINKS.linkedin} target="_blank" rel="noreferrer">
+            [LINKEDIN ↗]
+          </a>
+          <a className="b-link" href={RESUME_URL} target="_blank" rel="noreferrer">
+            [RESUME.PDF ↗]
+          </a>
+        </div>
       </div>
     </section>
   );

@@ -1,36 +1,58 @@
+import { useRef } from 'react';
 import { EXPERIENCE } from '../data/content.js';
 import CompanyLogo from './CompanyLogo.jsx';
 
 function Experience() {
+  const listRef = useRef(null);
+
+  const setAll = (open) => {
+    listRef.current?.querySelectorAll('details').forEach((d) => {
+      d.open = open;
+    });
+  };
+
   return (
-    <section className="section container" id="experience" aria-labelledby="experience-title">
-      <div className="section__head" data-reveal>
-        <span className="section__num" aria-hidden="true">
-          01
-        </span>
-        <h2 className="section__title" id="experience-title">
-          Experience
+    <section id="experience" aria-labelledby="experience-title">
+      <div className="secbar">
+        <h2 className="secbar__title" id="experience-title">
+          01 // EXPERIENCE
         </h2>
+        <div className="secbar__tools">
+          <button type="button" className="b-btn b-btn--inv" onClick={() => setAll(true)}>
+            [EXPAND_ALL]
+          </button>
+          <button type="button" className="b-btn b-btn--inv" onClick={() => setAll(false)}>
+            [COLLAPSE_ALL]
+          </button>
+        </div>
       </div>
-      <ol className="xp">
+      <div ref={listRef}>
         {EXPERIENCE.map((job, i) => (
-          <li className="xp__item" key={job.company} data-reveal style={{ '--rd': `${i * 60}ms` }}>
-            <p className="xp__period">
-              {job.period}
-              {job.status && <span className="xp__status">{job.status}</span>}
-            </p>
-            <div className="xp__main">
-              <h3 className="xp__company">
-                <CompanyLogo name={job.company} size={30} />
-                <span>{job.company}</span>
-              </h3>
-              <p className="xp__role">{job.role}</p>
-              <p className="xp__summary">{job.summary}</p>
-              <p className="xp__tags">{job.tags.join(' / ')}</p>
+          <details className="disc" key={job.company} open={i === 0}>
+            <summary className="disc__row">
+              <span className="disc__caret" aria-hidden="true" />
+              <span className="disc__no">{String(i + 1).padStart(2, '0')}</span>
+              <span className="disc__logo">
+                <CompanyLogo name={job.company} size={22} />
+              </span>
+              <span className="disc__name">
+                {job.company.toUpperCase()}
+                {job.status && <mark className="disc__mark">{job.status.toUpperCase()}</mark>}
+              </span>
+              <span className="disc__meta">{job.role}</span>
+              <span className="disc__when">{job.period}</span>
+            </summary>
+            <div className="disc__body">
+              <ul className="raw">
+                {job.details.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+              <p className="disc__tags">STACK: {job.tags.join(' / ').toUpperCase()}</p>
             </div>
-          </li>
+          </details>
         ))}
-      </ol>
+      </div>
     </section>
   );
 }

@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
 
-const THEME_COLORS = { light: '#f4f2ec', dark: '#0b0b0c' };
-
-const prefersReducedMotion = () =>
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const THEME_COLORS = { light: '#ffffff', dark: '#000000' };
 
 const getInitialTheme = () => {
   const stored = localStorage.getItem('theme');
@@ -31,27 +27,11 @@ export default function useTheme() {
     return () => query.removeEventListener('change', onChange);
   }, []);
 
-  // Circular reveal via the View Transition API, expanding from the click
-  // point; falls back to a plain crossfade where unsupported.
-  const toggleTheme = useCallback((event) => {
-    const root = document.documentElement;
-    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  // Hard flip, no crossfade: the honest brutalist theme switch
+  const toggleTheme = useCallback(() => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     localStorage.setItem('theme', next);
-
-    if (prefersReducedMotion() || typeof document.startViewTransition !== 'function') {
-      root.classList.add('theme-anim');
-      window.setTimeout(() => root.classList.remove('theme-anim'), 400);
-      setTheme(next);
-      return;
-    }
-
-    const x = event?.clientX ?? window.innerWidth - 48;
-    const y = event?.clientY ?? 48;
-    root.style.setProperty('--vt-x', `${x}px`);
-    root.style.setProperty('--vt-y', `${y}px`);
-    document.startViewTransition(() => {
-      flushSync(() => setTheme(next));
-    });
+    setTheme(next);
   }, []);
 
   return { theme, toggleTheme };

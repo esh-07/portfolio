@@ -1,42 +1,56 @@
-import { HERO, LINKS, RESUME_URL } from '../data/content.js';
+import { COMPANIES, FACTS, HERO, LINKS } from '../data/content.js';
+import CompanyLogo from './CompanyLogo.jsx';
+
+const formatFact = (fact) => {
+  if (fact.plain) return `${fact.label} ${fact.value}`;
+  const value = fact.decimals ? fact.value.toFixed(fact.decimals) : String(fact.value);
+  return `${value}${fact.suffix || ''} ${fact.label}`;
+};
 
 function Hero() {
   return (
-    <section className="hero container" id="top">
-      <p className="hero__meta" data-load style={{ '--ld': '0ms' }}>
-        <span className="hero__meta-item">{HERO.location}</span>
-        <span className="hero__meta-item hero__meta-item--status">{HERO.status}</span>
-      </p>
-      <h1 className="hero__name">
-        <span className="hero__line">
-          <span className="hero__line-inner" style={{ '--ld': '60ms' }}>
-            Eshaan
-          </span>
-        </span>
-        <span className="hero__line">
-          <span className="hero__line-inner" style={{ '--ld': '150ms' }}>
-            Chaturvedi
-          </span>
-        </span>
-      </h1>
-      <p className="hero__lede" data-load style={{ '--ld': '300ms' }}>
-        {HERO.tagline}
-      </p>
-      <div className="hero__cta" data-load style={{ '--ld': '380ms' }}>
-        <a className="btn btn--solid" href={RESUME_URL} target="_blank" rel="noreferrer">
-          Resume<span aria-hidden="true"> ↗</span>
-        </a>
-        <a className="btn" href={LINKS.github} target="_blank" rel="noreferrer">
-          GitHub<span aria-hidden="true"> ↗</span>
-        </a>
-        <a className="btn" href={LINKS.linkedin} target="_blank" rel="noreferrer">
-          LinkedIn<span aria-hidden="true"> ↗</span>
-        </a>
-        <a className="btn" href={`mailto:${LINKS.email}`}>
-          Email
-        </a>
+    <>
+      <div className="hero">
+        <section className="hero__main" aria-label="Introduction">
+          <h1 className="hero__name">
+            ESHAAN
+            <br />
+            CHATURVEDI
+          </h1>
+          <p className="hero__status">
+            STATUS: <mark>{HERO.status.toUpperCase()}</mark>
+          </p>
+          <p className="hero__blurb">
+            {HERO.tagline} CS + Data Science @ UW-Madison, 3.9/4.0. Based in {HERO.location}.
+          </p>
+        </section>
+        <aside className="hero__facts" aria-label="Quick facts">
+          <h2 className="hero__facts-title">QUICK_FACTS</h2>
+          <ul className="raw">
+            <li>{HERO.location}</li>
+            {FACTS.map((fact) => (
+              <li key={fact.label}>{formatFact(fact)}</li>
+            ))}
+            <li>
+              <a className="b-link" href={`mailto:${LINKS.email}`}>
+                {LINKS.email}
+              </a>
+            </li>
+          </ul>
+        </aside>
       </div>
-    </section>
+      <div className="employers" aria-label="Companies">
+        <span className="employers__label">EMPLOYERS:</span>
+        <ul className="employers__list">
+          {COMPANIES.map((company) => (
+            <li key={company}>
+              <CompanyLogo name={company} size={20} />
+              <span>{company.toUpperCase()}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
