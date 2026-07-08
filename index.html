@@ -4,10 +4,71 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/portfolio/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Eshaan Chaturvedi - CS & Data Science @ UW-Madison" />
-    <title>Eshaan Chaturvedi</title>
-    <script type="module" crossorigin src="/portfolio/assets/index-7ZR7Bs3H.js"></script>
-    <link rel="stylesheet" crossorigin href="/portfolio/assets/index-CzSt07nz.css">
+    <meta
+      name="description"
+      content="Eshaan Chaturvedi, software & ML engineer. CS + Data Science @ UW-Madison. Incoming @ Meta; previously Cohere, PlayStation, RIPPLR, Infosys."
+    />
+    <meta property="og:title" content="Eshaan Chaturvedi · Software & ML Engineer" />
+    <meta
+      property="og:description"
+      content="ML systems and infrastructure that hold up under real load. Incoming @ Meta; previously Cohere & PlayStation."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://esh-07.github.io/portfolio/" />
+    <meta property="og:image" content="https://esh-07.github.io/portfolio/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Eshaan Chaturvedi · Software & ML Engineer" />
+    <meta name="twitter:image" content="https://esh-07.github.io/portfolio/og.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Eshaan Chaturvedi",
+        "url": "https://esh-07.github.io/portfolio/",
+        "email": "mailto:eshaanchaturvedi@gmail.com",
+        "jobTitle": "Software Engineer",
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Wisconsin-Madison"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Madison",
+          "addressRegion": "WI"
+        },
+        "sameAs": [
+          "https://github.com/esh-07",
+          "https://www.linkedin.com/in/eshaan-chaturvedi-9718851a1"
+        ]
+      }
+    </script>
+    <meta name="theme-color" content="#f4f2ec" />
+    <script>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js');
+        var theme = 'light';
+        try {
+          var stored = localStorage.getItem('theme');
+          theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
+        } catch (e) {
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+        }
+        root.dataset.theme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0b0b0c' : '#f4f2ec');
+      })();
+    </script>
+    <title>Eshaan Chaturvedi · Software & ML Engineer</title>
+    <script type="module" crossorigin src="/portfolio/assets/index-fLGlEv70.js"></script>
+    <link rel="stylesheet" crossorigin href="/portfolio/assets/index-BT4iifG4.css">
   </head>
   <body>
     <div id="root"></div>
